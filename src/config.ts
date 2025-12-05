@@ -19,20 +19,33 @@ import path from "path";
 
 // TODO - path.join([...paths]) and os.homedir
 
-type Config = {
-  dbURL: string;
+export type Config = {
+  dbUrl: string;
   currentUserName?: string;
 };
 
 export function setUser(userName: string, currentConfig: Config): Config {
   currentConfig.currentUserName = userName;
+  writeConfig(currentConfig);
   return currentConfig;
 }
 
-export function readConfig() {}
+export function readConfig() {
+  const filePath = getConfigFilePath();
+  const data = fs.readFileSync(filePath, 'utf8')
+  const jsonData = JSON.parse(data);
+  // console.log(jsonData);
+  return(jsonData)
+}
 
 function getConfigFilePath(): string {
+  // const filePath = [os.homedir, ".gatorconfig.js"]
   return `${os.homedir}/.gatorconfig.json`;
 }
-function writeConfig(cfg: Config): void;
-function validateConfig(rawConfig: any): Config; // used by readConfig to validate the result of JSON.parse.
+
+function writeConfig(cfg: Config): void {
+  const homeDir = getConfigFilePath();
+  fs.writeFileSync(homeDir, JSON.stringify(cfg), { encoding: 'utf8' })
+}
+
+// function validateConfig(rawConfig: any): Config; // used by readConfig to validate the result of JSON.parse.
