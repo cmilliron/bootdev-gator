@@ -4,7 +4,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "tsx ./src/index.ts"
+    "start": "tsx ./src/index.ts",
+    "init": "tsx ./src/init_db.ts"
   },
   "keywords": [],
   "author": "",
