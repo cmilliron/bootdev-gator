@@ -1,24 +1,13 @@
-import { setUser } from "./config";
-
 export type CommandHandler = (cmdName: string, ...args: string[]) => void;
 
 export type CommandsRegistry = Record<string, CommandHandler>;
-
-export function handlerLogin(cmdName: string, ...args: string[]): void {
-  if (!args[0]) {
-    throw new Error("You need a user name.");
-  }
-  console.log(args[0]);
-  setUser(args[0]);
-  console.log(`${args[0]} has successfully login in.`);
-}
 
 // This function registers a new handler function for a command name.
 export function registerCommand(
   registry: CommandsRegistry,
   cmdName: string,
   handler: CommandHandler
-) {
+): void {
   registry[cmdName] = handler;
 }
 
@@ -28,6 +17,11 @@ export function runCommand(
   cmdName: string,
   ...args: string[]
 ) {
-  const command = registry[cmdName];
-  command(cmdName, ...args);
+  const commandHandler = registry[cmdName];
+
+  if (!commandHandler) {
+    throw new Error(`Unknown command: ${cmdName}`);
+  }
+
+  commandHandler(cmdName, ...args);
 }
