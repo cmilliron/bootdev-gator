@@ -7,7 +7,7 @@ import { handlerLogin } from "./commands/users";
 import { readConfig } from "./config";
 import { argv } from "process";
 
-function main() {
+async function main() {
   const [command, ...args] = argv.slice(2);
 
   const cfg = readConfig();
@@ -16,11 +16,12 @@ function main() {
   registerCommand(commandRegistry, "login", handlerLogin);
 
   try {
-    runCommand(commandRegistry, command, ...args);
+    await runCommand(commandRegistry, command, ...args);
   } catch (error) {
     console.error(error);
     process.exit(1);
   }
+  process.exit(0)
 }
 
 main();
