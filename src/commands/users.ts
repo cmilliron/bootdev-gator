@@ -16,7 +16,7 @@ export async function handlerRegister(cmdName: string, ...args: string[]) {
     throw new Error(`usage: ${cmdName} <name>`);
   }
   try {
-    console.log(`Trying to create users - ${args}`);
+    console.log(`Trying to create users - ${args[0]}`);
     const result = await createUser(args[0]);
     console.log(result);
     setUser(args[0]);

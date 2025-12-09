@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 
 export async function createUser(name: string) {
   const res = await db.insert(users).values({ name: name }).returning();
+  console.log("here");
   console.log(res);
   const result = res[0];
   return result;
