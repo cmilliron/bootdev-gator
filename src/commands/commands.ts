@@ -1,4 +1,7 @@
-export type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
+export type CommandHandler = (
+  cmdName: string,
+  ...args: string[]
+) => Promise<void>;
 
 export type CommandsRegistry = Record<string, CommandHandler>;
 
@@ -22,6 +25,6 @@ export async function runCommand(
   if (!commandHandler) {
     throw new Error(`Unknown command: ${cmdName}`);
   }
-
+  console.log(`Running command ${cmdName}`);
   commandHandler(cmdName, ...args);
 }

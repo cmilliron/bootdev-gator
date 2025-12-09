@@ -15,12 +15,14 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^24.10.1",
+    "@types/pg": "^8.15.6",
     "drizzle-kit": "^0.31.8",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.0",
+    "pg": "^8.16.3",
     "postgres": "^3.4.7"
   }
 }
