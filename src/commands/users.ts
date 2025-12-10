@@ -1,7 +1,12 @@
-import { createUser, getUser, deleteAllUsers } from "src/lib/db/queries/users";
-import { setUser } from "../config";
+import {
+  createUser,
+  getUser,
+  deleteAllUsers,
+  getAllUsers,
+} from "src/lib/db/queries/users";
+import { readConfig, setUser } from "../config";
 
-export async function handlerLogin(cmdName: string, ...args: string[]) {
+export async function loginUserHandler(cmdName: string, ...args: string[]) {
   if (!args[0] || !cmdName) {
     throw new Error(`usage: ${cmdName} <name>`);
   }
@@ -15,7 +20,7 @@ export async function handlerLogin(cmdName: string, ...args: string[]) {
   console.log(`${user.name} is the currrent active user.`);
 }
 
-export async function handlerRegister(cmdName: string, ...args: string[]) {
+export async function registerUserHandler(cmdName: string, ...args: string[]) {
   console.log("In Register Command");
   if (!args[0] || !cmdName) {
     throw new Error(`usage: ${cmdName} <name>`);
@@ -34,7 +39,22 @@ export async function handlerRegister(cmdName: string, ...args: string[]) {
   console.log(`${newUser.name} has been registered.\n`);
 }
 
-export async function handlerResetDatabase(cmdName: string, ...args: string[]) {
+export async function resetDatabaseHandler(cmdName: string, ...args: string[]) {
   await deleteAllUsers();
   console.log("User database has been reset");
+}
+
+export async function listUsersHandler(cmdName: string, ...args: string[]) {
+  const allUsers = await getAllUsers();
+  if (allUsers.length === 0) {
+    console.log("There are no registered users");
+  } else {
+    const { currentUserName } = readConfig();
+    console.log("Users:");
+    allUsers.map((user) =>
+      console.log(
+        ` * ${user.name}${currentUserName === user.name ? " (current)" : ""}`
+      )
+    );
+  }
 }

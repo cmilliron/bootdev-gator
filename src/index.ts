@@ -4,10 +4,12 @@ import {
   runCommand,
 } from "./commands/commands";
 import {
-  handlerLogin,
-  handlerRegister,
-  handlerResetDatabase,
+  listUsersHandler,
+  loginUserHandler,
+  registerUserHandler,
+  resetDatabaseHandler,
 } from "./commands/users";
+
 import { readConfig } from "./config";
 import { argv } from "process";
 
@@ -18,9 +20,10 @@ async function main() {
   console.log(`dbURl: ${cfg.dbUrl}\nCurrent User: ${cfg.currentUserName}`);
   const commandRegistry: CommandsRegistry = {};
 
-  registerCommand(commandRegistry, "login", handlerLogin);
-  registerCommand(commandRegistry, "register", handlerRegister);
-  registerCommand(commandRegistry, "reset", handlerResetDatabase);
+  registerCommand(commandRegistry, "login", loginUserHandler);
+  registerCommand(commandRegistry, "register", registerUserHandler);
+  registerCommand(commandRegistry, "reset", resetDatabaseHandler);
+  registerCommand(commandRegistry, "users", listUsersHandler);
 
   try {
     await runCommand(commandRegistry, command, ...args);

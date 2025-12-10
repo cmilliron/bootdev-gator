@@ -18,3 +18,8 @@ export async function deleteAllUsers() {
   const deleteUsers = await db.delete(users);
   return deleteUsers;
 }
+
+export async function getAllUsers() {
+  const results = await db.select().from(users);
+  return results;
+}
