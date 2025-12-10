@@ -3,7 +3,11 @@ import {
   registerCommand,
   runCommand,
 } from "./commands/commands";
-import { handlerLogin, handlerRegister } from "./commands/users";
+import {
+  handlerLogin,
+  handlerRegister,
+  handlerResetDatabase,
+} from "./commands/users";
 import { readConfig } from "./config";
 import { argv } from "process";
 
@@ -16,6 +20,7 @@ async function main() {
 
   registerCommand(commandRegistry, "login", handlerLogin);
   registerCommand(commandRegistry, "register", handlerRegister);
+  registerCommand(commandRegistry, "reset", handlerResetDatabase);
 
   try {
     await runCommand(commandRegistry, command, ...args);
