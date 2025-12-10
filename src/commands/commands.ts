@@ -19,7 +19,7 @@ export async function runCommand(
   registry: CommandsRegistry,
   cmdName: string,
   ...args: string[]
-) {
+): Promise<void> {
   const commandHandler = registry[cmdName];
 
   if (!commandHandler) {
