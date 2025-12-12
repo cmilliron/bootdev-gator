@@ -20,3 +20,8 @@ export async function getFeed(feedID: string, userID: string) {
     .where(and(eq(feeds.id, feedID), eq(feeds.user_id, userID)));
   return result;
 }
+
+export async function getAllFeeds() {
+  const result = await db.select().from(feeds);
+  return result;
+}

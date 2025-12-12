@@ -2,7 +2,7 @@ import { XMLParser } from "fast-xml-parser";
 import { Feed, User } from "src/lib/db/schema";
 import { getFeed } from "src/lib/db/queries/feed";
 
-type RSSFeed = {
+export type RSSFeed = {
   channel: {
     title: string;
     link: string;
@@ -11,7 +11,7 @@ type RSSFeed = {
   };
 };
 
-type RSSItem = {
+export type RSSItem = {
   title: string;
   link: string;
   description: string;

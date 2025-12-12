@@ -9,7 +9,7 @@ import {
   registerUserHandler,
   resetDatabaseHandler,
 } from "./handlers/users";
-import { addFeedHandler, getFeedHandler } from "./handlers/feed";
+import { addFeedHandler, feedsHandler, getFeedHandler } from "./handlers/feed";
 
 import { readConfig } from "./config";
 import { argv } from "process";
@@ -17,8 +17,8 @@ import { argv } from "process";
 async function main() {
   const [command, ...args] = argv.slice(2);
 
-  const cfg = readConfig();
-  console.log(`dbURl: ${cfg.dbUrl}\nCurrent User: ${cfg.currentUserName}`);
+  // const cfg = readConfig();
+  // console.log(`dbURl: ${cfg.dbUrl}\nCurrent User: ${cfg.currentUserName}`);
   const commandRegistry: CommandsRegistry = {};
 
   registerCommand(commandRegistry, "login", loginUserHandler);
@@ -27,7 +27,7 @@ async function main() {
   registerCommand(commandRegistry, "users", listUsersHandler);
   registerCommand(commandRegistry, "agg", getFeedHandler);
   registerCommand(commandRegistry, "addfeed", addFeedHandler);
-  // registerCommand(commandRegistry, "printfeed", printFeedHandler);
+  registerCommand(commandRegistry, "feeds", feedsHandler);
 
   try {
     await runCommand(commandRegistry, command, ...args);

@@ -1,6 +1,6 @@
 import {
   createUser,
-  getUser,
+  getUserByName,
   deleteAllUsers,
   getAllUsers,
 } from "src/lib/db/queries/users";
@@ -11,8 +11,8 @@ export async function loginUserHandler(cmdName: string, ...args: string[]) {
     throw new Error(`usage: ${cmdName} <name>`);
   }
   const userName = args[0];
-  console.log(userName);
-  const user = await getUser(userName);
+  // console.log(userName);
+  const user = await getUserByName(userName);
   if (!user) {
     throw new Error(`User ${userName} not registered`);
   }
@@ -28,7 +28,7 @@ export async function registerUserHandler(cmdName: string, ...args: string[]) {
 
   console.log(`Trying to create users - ${args[0]}`);
 
-  const user = await getUser(args[0]);
+  const user = await getUserByName(args[0]);
   if (user) {
     console.log(`${user.name} with ${user.id} ID already exists`);
     throw new Error("User Already Exists");
