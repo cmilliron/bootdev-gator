@@ -1,4 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
+import { Feed, User } from "src/lib/db/schema";
+import { getFeed } from "src/lib/db/queries/feed";
 
 type RSSFeed = {
   channel: {
@@ -75,4 +77,9 @@ export async function fetchFeed(feedURL: string): Promise<RSSFeed> {
   };
 
   return rssFeed;
+}
+
+export async function printFeed(feed: Feed, user: User) {
+  const feedData = await getFeed(feed.id, user.id);
+  console.log(feedData);
 }

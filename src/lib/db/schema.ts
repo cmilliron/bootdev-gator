@@ -16,8 +16,11 @@ export const users = pgTable("users", {
 
 export const feeds = pgTable("feeds", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),
-  name: text("name").notNull().unique(),
+  name: text("name").notNull(),
   url: text("url").notNull().unique(),
   user_id: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
   ...timestamps,
 });
+
+export type Feed = typeof feeds.$inferSelect; // feeds is the table object in schema.ts
+export type User = typeof users.$inferSelect; // feeds is the table object in schema.ts
