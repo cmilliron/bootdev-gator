@@ -22,6 +22,13 @@
       "when": 1765562410772,
       "tag": "0002_sweet_gateway",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1769115767028,
+      "tag": "0003_smooth_miracleman",
+      "breakpoints": true
     }
   ]
 }
