@@ -1,1 +1,0 @@
-ALTER TABLE "feeds" DROP CONSTRAINT "feeds_name_unique";

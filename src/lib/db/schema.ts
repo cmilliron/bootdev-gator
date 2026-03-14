@@ -33,7 +33,7 @@ export const feedFollows = pgTable(
     user_id: uuid("user_id")
       .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
-    feed_id: uuid("user_id")
+    feed_id: uuid("feed_id")
       .references(() => feeds.id, { onDelete: "cascade" })
       .notNull(),
   },
