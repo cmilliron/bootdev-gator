@@ -5,8 +5,8 @@ import { Feed, User } from "src/lib/db/schema";
 import { getUserByID, getUserByName } from "src/lib/db/queries/users";
 
 export async function getFeedHandler(cmdName: string, ...args: string[]) {
-  // const feedURL = args[0];
-  const feed = await fetchFeed("https://www.wagslane.dev/index.xml");
+  const feedURL = args[0] || "https://www.wagslane.dev/index.xml";
+  const feed = await fetchFeed(feedURL);
   console.log(JSON.stringify(feed));
 }
 
@@ -32,4 +32,10 @@ export async function feedsHandler(cmdName: string, ...args: string[]) {
     console.log(`  - ${item.url}`);
     console.log(`  - ${(await getUserByID(item.user_id)).name}`);
   }
+}
+
+export async function createFeedFollow(cmdName: string, ...args: string[]) {
+  // TODO  It should insert a feed follow record,
+  // but then return all the fields from the feed follow as well as the names of the linked user
+  // and feed.
 }
