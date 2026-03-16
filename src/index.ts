@@ -9,7 +9,12 @@ import {
   registerUserHandler,
   resetDatabaseHandler,
 } from "./handlers/users";
-import { addFeedHandler, feedsHandler, getFeedHandler } from "./handlers/feed";
+import {
+  addFeedHandler,
+  feedsHandler,
+  getFeedHandler,
+  followFeedHandler,
+} from "./handlers/feed";
 
 import { argv } from "process";
 
@@ -25,6 +30,7 @@ async function main() {
   registerCommand(commandRegistry, "agg", getFeedHandler);
   registerCommand(commandRegistry, "addfeed", addFeedHandler);
   registerCommand(commandRegistry, "feeds", feedsHandler);
+  registerCommand(commandRegistry, "follow", followFeedHandler);
 
   try {
     await runCommand(commandRegistry, command, ...args);
