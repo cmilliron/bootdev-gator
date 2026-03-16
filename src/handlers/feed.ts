@@ -1,7 +1,12 @@
-import { fetchFeed, printFeed } from "src/utils/feed";
-import { createFeed, getAllFeeds } from "src/lib/db/queries/feed";
+import { fetchFeed, printFeed, printFollowFeed } from "src/utils/feed";
+import {
+  createFeed,
+  createFeedFollow,
+  getAllFeeds,
+  getFeedByUrl,
+} from "src/lib/db/queries/feed";
 import { readConfig } from "src/config";
-import { Feed, User } from "src/lib/db/schema";
+import { Feed, FeedFollow, User } from "src/lib/db/schema";
 import { getUserByID, getUserByName } from "src/lib/db/queries/users";
 
 export async function getFeedHandler(cmdName: string, ...args: string[]) {
@@ -34,8 +39,11 @@ export async function feedsHandler(cmdName: string, ...args: string[]) {
   }
 }
 
-export async function createFeedFollow(cmdName: string, ...args: string[]) {
-  // TODO  It should insert a feed follow record,
-  // but then return all the fields from the feed follow as well as the names of the linked user
-  // and feed.
+export async function followFeedHandler(cmdName: string, ...args: string[]) {
+  const url = args[0];
+  const { currentUserName } = readConfig();
+  const user: User = await getUserByName(currentUserName);
+  const feed: Feed = await getFeedByUrl(url);
+  const feedFollow: FeedFollow = await createFeedFollow(feed.id, user.id);
+  await printFollowFeed(feedFollow.id);
 }
