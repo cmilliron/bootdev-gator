@@ -41,4 +41,6 @@ export const feedFollows = pgTable(
 );
 
 export type Feed = typeof feeds.$inferSelect; // feeds is the table object in schema.ts
-export type User = typeof users.$inferSelect; // feeds is the table object in schema.ts
+export type User = typeof users.$inferSelect; // user is the table object in schema.ts
+export type FeedFollow = typeof feedFollows.$inferSelect; // feedFollow is the table object in schema.ts
+export type FollowFeedForPrint = FeedFollow & Feed & User;
