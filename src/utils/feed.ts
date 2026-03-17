@@ -1,6 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
-import { Feed, User } from "src/lib/db/schema";
-import { getFeed } from "src/lib/db/queries/feed";
+import { Feed, FeedFollow, User } from "src/lib/db/schema";
+import { getFeed, getSingleFeedFollowWithData } from "src/lib/db/queries/feed";
 
 export type RSSFeed = {
   channel: {
@@ -30,7 +30,7 @@ export async function fetchFeed(feedURL: string): Promise<RSSFeed> {
 
   if (!rawFeed.ok) {
     throw new Error(
-      `failed to fetch feed: ${rawFeed.status} ${rawFeed.statusText}`
+      `failed to fetch feed: ${rawFeed.status} ${rawFeed.statusText}`,
     );
   }
 
@@ -82,4 +82,12 @@ export async function fetchFeed(feedURL: string): Promise<RSSFeed> {
 export async function printFeed(feed: Feed, user: User) {
   const feedData = await getFeed(feed.id, user.id);
   console.log(feedData);
+}
+
+export async function printNewFollowFeed(followFeedId: string) {
+  const feedFollowData = await getSingleFeedFollowWithData(followFeedId);
+  console.log(feedFollowData);
+  console.log(
+    `Feed ${feedFollowData.feeds.name} is now followed by ${feedFollowData.users.name}`,
+  );
 }

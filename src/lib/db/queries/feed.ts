@@ -5,8 +5,8 @@ import {
   User,
   users,
   feedFollows,
-  FollowFeedForPrint,
   FeedFollow,
+  FeedFollowAllData,
 } from "../schema";
 import { eq, and } from "drizzle-orm";
 import { db } from "..";
@@ -52,17 +52,16 @@ export async function createFeedFollow(feedId: string, userId: string) {
     .returning();
   //   console.log("results\n", result);
   const newFeedFollow = results[0];
+  console.log(newFeedFollow);
   return newFeedFollow;
 }
 
 export async function getSingleFeedFollowWithData(feedFollowId: string) {
-  const [feedFollowData] = await db
+  const [feedFollowData]: FeedFollowAllData[] = await db
     .select()
     .from(feedFollows)
     .where(eq(feedFollows.id, feedFollowId))
     .innerJoin(feeds, eq(feedFollows.feed_id, feeds.id))
     .innerJoin(users, eq(feedFollows.user_id, users.id));
-  // Need to finish
-  console.log(feedFollowData);
   return feedFollowData;
 }

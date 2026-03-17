@@ -1,4 +1,4 @@
-import { fetchFeed, printFeed, printFollowFeed } from "src/utils/feed";
+import { fetchFeed, printFeed, printNewFollowFeed } from "src/utils/feed";
 import {
   createFeed,
   createFeedFollow,
@@ -45,5 +45,5 @@ export async function followFeedHandler(cmdName: string, ...args: string[]) {
   const user: User = await getUserByName(currentUserName);
   const feed: Feed = await getFeedByUrl(url);
   const feedFollow: FeedFollow = await createFeedFollow(feed.id, user.id);
-  await printFollowFeed(feedFollow.id);
+  await printNewFollowFeed(feedFollow.id);
 }
