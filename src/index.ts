@@ -14,7 +14,9 @@ import {
   feedsHandler,
   getFeedHandler,
   followFeedHandler,
+  followingFeedHandler,
 } from "./handlers/feed";
+import { middlewareLoggedIn } from "./middleware/user";
 
 import { argv } from "process";
 
@@ -28,9 +30,24 @@ async function main() {
   registerCommand(commandRegistry, "reset", resetDatabaseHandler);
   registerCommand(commandRegistry, "users", listUsersHandler);
   registerCommand(commandRegistry, "agg", getFeedHandler);
-  registerCommand(commandRegistry, "addfeed", addFeedHandler);
   registerCommand(commandRegistry, "feeds", feedsHandler);
-  registerCommand(commandRegistry, "follow", followFeedHandler);
+
+  // Protected Feeds
+  registerCommand(
+    commandRegistry,
+    "addfeed",
+    await middlewareLoggedIn(addFeedHandler),
+  );
+  registerCommand(
+    commandRegistry,
+    "follow",
+    await middlewareLoggedIn(followFeedHandler),
+  );
+  registerCommand(
+    commandRegistry,
+    "following",
+    await middlewareLoggedIn(followingFeedHandler),
+  );
 
   try {
     await runCommand(commandRegistry, command, ...args);

@@ -86,7 +86,7 @@ export async function printFeed(feed: Feed, user: User) {
 
 export async function printNewFollowFeed(followFeedId: string) {
   const feedFollowData = await getSingleFeedFollowWithData(followFeedId);
-  console.log(feedFollowData);
+  // console.log(feedFollowData);
   console.log(
     `Feed ${feedFollowData.feeds.name} is now followed by ${feedFollowData.users.name}`,
   );
