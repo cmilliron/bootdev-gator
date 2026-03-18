@@ -15,6 +15,7 @@ import {
   getFeedHandler,
   followFeedHandler,
   followingFeedHandler,
+  unfollowFeedHandler,
 } from "./handlers/feed";
 import { middlewareLoggedIn } from "./middleware/user";
 
@@ -47,6 +48,11 @@ async function main() {
     commandRegistry,
     "following",
     middlewareLoggedIn(followingFeedHandler),
+  );
+  registerCommand(
+    commandRegistry,
+    "unfollow",
+    middlewareLoggedIn(unfollowFeedHandler),
   );
 
   try {

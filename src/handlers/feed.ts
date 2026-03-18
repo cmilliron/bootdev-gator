@@ -2,6 +2,7 @@ import { fetchFeed, printFeed, printNewFollowFeed } from "src/utils/feed";
 import {
   createFeed,
   createFeedFollow,
+  deleteFeedFollow,
   getAllFeeds,
   getFeedByUrl,
   getFeedFollowsForUser,
@@ -73,4 +74,21 @@ export async function followingFeedHandler(
   for (let i = 0; i < feedsForFollers.length; i++) {
     console.log(` - ${feedsForFollers[i].feed}`);
   }
+}
+
+export async function unfollowFeedHandler(
+  cmdName: string,
+  user: User,
+  ...args: string[]
+) {
+  const feedUrl = args[0];
+  const feed: Feed = await getFeedByUrl(feedUrl);
+
+  const deletedFeed = await deleteFeedFollow(feed.id, user.id);
+  if (!deletedFeed) {
+    throw new Error("Problem Deleting User");
+  }
+  console.log(
+    `${user.name} is no longer following ${feed.name} at ${feed.url}`,
+  );
 }
