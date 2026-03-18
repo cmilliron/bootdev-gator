@@ -36,17 +36,17 @@ async function main() {
   registerCommand(
     commandRegistry,
     "addfeed",
-    await middlewareLoggedIn(addFeedHandler),
+    middlewareLoggedIn(addFeedHandler),
   );
   registerCommand(
     commandRegistry,
     "follow",
-    await middlewareLoggedIn(followFeedHandler),
+    middlewareLoggedIn(followFeedHandler),
   );
   registerCommand(
     commandRegistry,
     "following",
-    await middlewareLoggedIn(followingFeedHandler),
+    middlewareLoggedIn(followingFeedHandler),
   );
 
   try {

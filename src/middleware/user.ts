@@ -11,15 +11,15 @@ type UserCommanderHandler = (
 
 // type middlewareLoggedIn = (handler: UserCommanderHandler) => CommandHandler;
 
-export async function middlewareLoggedIn(
+export function middlewareLoggedIn(
   handler: UserCommanderHandler,
-): Promise<CommandHandler> {
-  return async (cmdName: string, ...args: string[]) => {
+): CommandHandler {
+  return async (cmdName: string, ...args: string[]): Promise<void> => {
     const { currentUserName } = readConfig();
     const user: User = await getUserByName(currentUserName);
     if (!user) {
       throw new Error(`User ${currentUserName} not found`);
     }
-    return await handler(cmdName, user, ...args);
+    await handler(cmdName, user, ...args);
   };
 }
