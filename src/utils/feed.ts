@@ -1,6 +1,11 @@
 import { XMLParser } from "fast-xml-parser";
 import { Feed, FeedFollow, User } from "src/lib/db/schema";
-import { getFeed, getSingleFeedFollowWithData } from "src/lib/db/queries/feed";
+import {
+  getFeed,
+  getNextFeedToFetch,
+  getSingleFeedFollowWithData,
+  markFeedFetched,
+} from "src/lib/db/queries/feed";
 
 export type RSSFeed = {
   channel: {
@@ -90,4 +95,16 @@ export async function printNewFollowFeed(followFeedId: string) {
   console.log(
     `Feed ${feedFollowData.feeds.name} is now followed by ${feedFollowData.users.name}`,
   );
+}
+
+export async function scrapeFeeds() {
+  const nextFeed = await getNextFeedToFetch();
+  const updatedFeed = await markFeedFetched(nextFeed.id);
+  if (!updatedFeed) {
+    throw Error("Error updating Feed");
+  }
+  const feedData = await fetchFeed(nextFeed.url);
+  for (let item of feedData.channel.item) {
+    console.log(item.title);
+  }
 }

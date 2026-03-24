@@ -96,6 +96,7 @@ export async function markFeedFetched(feedId: string) {
     .set({ lastFetchedAt: sql`NOW()` })
     .returning();
   console.log(results);
+  return results[0];
 }
 
 // Add a getNextFeedToFetch function.
