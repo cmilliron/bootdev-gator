@@ -1,4 +1,9 @@
-import { fetchFeed, printFeed, printNewFollowFeed } from "src/utils/feed";
+import {
+  fetchFeed,
+  printFeed,
+  printNewFollowFeed,
+  scrapeFeeds,
+} from "src/utils/feed";
 import {
   createFeed,
   createFeedFollow,
@@ -12,9 +17,10 @@ import { Feed, FeedFollow, User } from "src/lib/db/schema";
 import { getUserByID, getUserByName } from "src/lib/db/queries/users";
 
 export async function getFeedHandler(cmdName: string, ...args: string[]) {
-  const feedURL = args[0] || "https://www.wagslane.dev/index.xml";
-  const feed = await fetchFeed(feedURL);
-  console.log(JSON.stringify(feed));
+  // const feedURL = args[0] || "https://www.wagslane.dev/index.xml";
+  // const feed = await fetchFeed(feedURL);
+  // console.log(JSON.stringify(feed));
+  await scrapeFeeds();
 }
 
 export async function addFeedHandler(
