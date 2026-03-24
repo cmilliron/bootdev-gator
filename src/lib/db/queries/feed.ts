@@ -8,7 +8,7 @@ import {
   FeedFollow,
   FeedFollowAllData,
 } from "../schema";
-import { eq, and, sql } from "drizzle-orm";
+import { eq, and, sql, asc } from "drizzle-orm";
 import { db } from "..";
 
 export async function createFeed(name: string, url: string, userID: string) {
@@ -96,4 +96,20 @@ export async function markFeedFetched(feedId: string) {
     .set({ lastFetchedAt: sql`NOW()` })
     .returning();
   console.log(results);
+}
+
+// Add a getNextFeedToFetch function.
+// It should return the next feed we should fetch posts from.
+// We want to scrape all the feeds in a continuous loop.
+// A simple approach is to keep track of when a feed was last fetched,
+// and always fetch the oldest one first (or any that haven't ever been fetched).
+// SQL has a NULLS FIRST clause that can help with this.
+// Drizzle has a sql operator that lets you write raw SQL queries when the ORM syntax isn't enough.
+export async function getNextFeedToFetch() {
+  const results: Feed[] = await db
+    .select()
+    .from(feeds)
+    .orderBy(sql`${feeds.lastFetchedAt} ASC NULLS FIRST`);
+  const nextFeed = results[0];
+  return nextFeed;
 }
