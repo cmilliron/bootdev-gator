@@ -8,7 +8,7 @@ import {
   FeedFollow,
   FeedFollowAllData,
 } from "../schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, sql } from "drizzle-orm";
 import { db } from "..";
 
 export async function createFeed(name: string, url: string, userID: string) {
@@ -84,4 +84,16 @@ export async function deleteFeedFollow(feedId: string, userId: string) {
     .returning();
 
   return results;
+}
+
+// Add a markFeedFetched function.
+// It should simply set the last_fetched_at and updated_at columns to the current time
+// for a given feed (probably by ID is simplest).
+export async function markFeedFetched(feedId: string) {
+  // Updates the last last_fetched_at column and (updated at) to current time.
+  const results = await db
+    .update(feeds)
+    .set({ lastFetchedAt: sql`NOW()` })
+    .returning();
+  console.log(results);
 }
