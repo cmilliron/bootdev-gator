@@ -94,7 +94,9 @@ export async function markFeedFetched(feedId: string) {
   const results = await db
     .update(feeds)
     .set({ lastFetchedAt: sql`NOW()` })
+    .where(eq(feeds.id, feedId))
     .returning();
+  console.log("Feed last_fetched_time updated. Results are:");
   console.log(results);
   return results[0];
 }

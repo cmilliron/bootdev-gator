@@ -104,7 +104,13 @@ export async function scrapeFeeds() {
     throw Error("Error updating Feed");
   }
   const feedData = await fetchFeed(nextFeed.url);
+  console.log(`Articles from ${nextFeed.name}:`);
+  let counter = 0;
   for (let item of feedData.channel.item) {
-    console.log(item.title);
+    console.log(` * ${item.title}`);
+    counter++;
+    if (counter > 10) {
+      break;
+    }
   }
 }

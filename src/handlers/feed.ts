@@ -20,7 +20,22 @@ export async function getFeedHandler(cmdName: string, ...args: string[]) {
   // const feedURL = args[0] || "https://www.wagslane.dev/index.xml";
   // const feed = await fetchFeed(feedURL);
   // console.log(JSON.stringify(feed));
-  await scrapeFeeds();
+  const timeBetween = args[0] || 5000;
+
+  // await scrapeFeeds();
+  await scrapeFeeds().catch(errorHandler);
+
+  const interval = setInterval(async () => {
+    await scrapeFeeds().catch(errorHandler);
+  }, 5000);
+
+  await new Promise<void>((resolve) => {
+    process.on("SIGINT", () => {
+      console.log("Shutting down feed aggregator...");
+      clearInterval(interval);
+      resolve();
+    });
+  });
 }
 
 export async function addFeedHandler(
@@ -97,4 +112,8 @@ export async function unfollowFeedHandler(
   console.log(
     `${user.name} is no longer following ${feed.name} at ${feed.url}`,
   );
+}
+
+export async function errorHandler(err: Error) {
+  console.log(err);
 }
