@@ -61,8 +61,8 @@ export const feedFollows = pgTable(
 export const posts = pgTable("posts", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),
   ...timestamps,
-  title: text("title"),
-  url: text("url").unique(),
+  title: text("title").notNull(),
+  url: text("url").notNull().unique(),
   description: text("description"),
   publishedAt: timestamp("published_at"),
   feedId: uuid("feed_id")
