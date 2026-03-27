@@ -79,3 +79,4 @@ export type FeedFollowAllData = {
   users: User;
 };
 export type Post = typeof posts.$inferSelect;
+export type PostForSubmition = typeof posts.$inferInsert;
