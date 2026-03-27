@@ -7,6 +7,19 @@ import {
   feedFollows,
   FeedFollow,
   FeedFollowAllData,
+  PostForSubmition,
+  posts,
 } from "../schema";
 import { eq, and, sql, asc } from "drizzle-orm";
 import { db } from "..";
+
+export async function createPost(post: PostForSubmition) {
+  const newPost = await db
+    .insert(posts)
+    .values({
+      title: post.title,
+      url: post.url,
+      feedId: post.feedId,
+    })
+    .returning();
+}
