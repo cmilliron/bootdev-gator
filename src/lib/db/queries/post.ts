@@ -20,6 +20,9 @@ export async function createPost(post: PostForSubmition) {
       title: post.title,
       url: post.url,
       feedId: post.feedId,
+      publishedAt: post.publishedAt,
     })
+    .onConflictDoNothing({ target: posts.url })
     .returning();
+  return newPost[0] ?? null;
 }

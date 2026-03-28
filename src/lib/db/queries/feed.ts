@@ -86,9 +86,6 @@ export async function deleteFeedFollow(feedId: string, userId: string) {
   return results;
 }
 
-// Add a markFeedFetched function.
-// It should simply set the last_fetched_at and updated_at columns to the current time
-// for a given feed (probably by ID is simplest).
 export async function markFeedFetched(feedId: string) {
   // Updates the last last_fetched_at column and (updated at) to current time.
   const results = await db
@@ -96,18 +93,11 @@ export async function markFeedFetched(feedId: string) {
     .set({ lastFetchedAt: sql`NOW()` })
     .where(eq(feeds.id, feedId))
     .returning();
-  console.log("Feed last_fetched_time updated. Results are:");
+  // console.log("Feed last_fetched_time updated. Results are:");
   console.log(results);
   return results[0];
 }
 
-// Add a getNextFeedToFetch function.
-// It should return the next feed we should fetch posts from.
-// We want to scrape all the feeds in a continuous loop.
-// A simple approach is to keep track of when a feed was last fetched,
-// and always fetch the oldest one first (or any that haven't ever been fetched).
-// SQL has a NULLS FIRST clause that can help with this.
-// Drizzle has a sql operator that lets you write raw SQL queries when the ORM syntax isn't enough.
 export async function getNextFeedToFetch() {
   const results: Feed[] = await db
     .select()

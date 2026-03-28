@@ -1,11 +1,12 @@
 import { XMLParser } from "fast-xml-parser";
-import { Feed, FeedFollow, User } from "src/lib/db/schema";
+import { Feed, FeedFollow, PostForSubmition, User } from "src/lib/db/schema";
 import {
   getFeed,
   getNextFeedToFetch,
   getSingleFeedFollowWithData,
   markFeedFetched,
 } from "src/lib/db/queries/feed";
+import { createPost } from "src/lib/db/queries/post";
 
 export type RSSFeed = {
   channel: {
@@ -42,7 +43,7 @@ export async function fetchFeed(feedURL: string): Promise<RSSFeed> {
   const rawFeedAsText = await rawFeed.text(); // add header
   const xmlParser = new XMLParser();
   const parsedFeed = xmlParser.parse(rawFeedAsText);
-  console.log(parsedFeed);
+  // console.log(parsedFeed);
   // Error Checking
   let itemList: RSSItem[];
   if (!parsedFeed.rss.channel) {
@@ -99,6 +100,7 @@ export async function printNewFollowFeed(followFeedId: string) {
 
 export async function scrapeFeeds() {
   const nextFeed = await getNextFeedToFetch();
+  const feedId = nextFeed.id;
   const updatedFeed = await markFeedFetched(nextFeed.id);
   if (!updatedFeed) {
     throw Error("Error updating Feed");
@@ -106,11 +108,31 @@ export async function scrapeFeeds() {
   const feedData = await fetchFeed(nextFeed.url);
   console.log(`Articles from ${nextFeed.name}:`);
   let counter = 0;
-  for (let item of feedData.channel.item) {
-    console.log(` * ${item.title}`);
-    counter++;
-    if (counter > 10) {
-      break;
+  if (feedData.channel.item.length > 0) {
+    for (let item of feedData.channel.item) {
+      let pubDate = new Date(item.pubDate);
+
+      const newPost: PostForSubmition = {
+        title: item.title,
+        description: item.description,
+        url: item.link,
+        feedId: feedId,
+        publishedAt: pubDate,
+      };
+      const response = await createPost(newPost);
+      if (!response) {
+        console.log(`${newPost.title} already exists`);
+        continue;
+      }
+      console.log(` * ${response.title} was add to the post database`);
+
+      // console.log();
+      counter++;
+      if (counter > 10) {
+        break;
+      }
     }
   }
 }
+
+export async function getPostForUser() {}
