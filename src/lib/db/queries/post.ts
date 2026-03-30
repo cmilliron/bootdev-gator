@@ -1,16 +1,5 @@
-import { readConfig } from "src/config";
-import {
-  Feed,
-  feeds,
-  User,
-  users,
-  feedFollows,
-  FeedFollow,
-  FeedFollowAllData,
-  PostForSubmition,
-  posts,
-} from "../schema";
-import { eq, and, sql, asc, or, inArray } from "drizzle-orm";
+import { User, PostForSubmition, posts } from "../schema";
+import { eq, and, sql, asc, or, inArray, desc } from "drizzle-orm";
 import { db } from "..";
 import { getFeedFollowsIdsForUser } from "./feed";
 
@@ -21,6 +10,7 @@ export async function createPost(post: PostForSubmition) {
       title: post.title,
       url: post.url,
       feedId: post.feedId,
+      description: post.description,
       publishedAt: post.publishedAt,
     })
     .onConflictDoNothing({ target: posts.url })
@@ -42,8 +32,9 @@ export async function getPostsForUser(
     .select()
     .from(posts)
     .where(inArray(posts.feedId, feedFollowIds))
+    .orderBy(desc(posts.publishedAt))
     .offset(offSet)
     .limit(limit);
-  console.log(results);
+  // console.log(results);
   return results;
 }

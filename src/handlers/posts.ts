@@ -11,5 +11,13 @@ export async function browseHandler(
   console.log("limit: ", limit);
   let offSet = 0;
   const userPosts = await getPostsForUser(user, limit, offSet);
-  // console.log(userPosts);
+
+  console.log(`Found ${userPosts.length} posts for user ${user.name}`);
+  for (let post of userPosts) {
+    console.log(`<--- ${post.title} --->`);
+    console.log(`     ${post.description}`);
+    console.log(`Published at: ${post.publishedAt}`);
+    console.log(`Link: ${post.url}`);
+    console.log(`<----------------------------->`);
+  }
 }
