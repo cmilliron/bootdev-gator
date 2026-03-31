@@ -3,8 +3,14 @@ import { users } from "../schema";
 import { eq } from "drizzle-orm";
 
 export async function createUser(name: string) {
-  const res = await db.insert(users).values({ name: name }).returning();
-  // console.log(res);
+  const res = await db
+    .insert(users)
+    .values({ name: name })
+    .onConflictDoNothing({ target: users.name })
+    .returning();
+  if (!res) {
+    throw new Error("User already exists");
+  }
   const result = res[0];
   return result;
 }

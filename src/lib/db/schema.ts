@@ -1,11 +1,4 @@
-import {
-  pgTable,
-  timestamp,
-  uuid,
-  text,
-  unique,
-  PgTable,
-} from "drizzle-orm/pg-core";
+import { pgTable, timestamp, uuid, text, unique } from "drizzle-orm/pg-core";
 
 const timestamps = {
   createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -46,17 +39,6 @@ export const feedFollows = pgTable(
   },
   (t) => [unique().on(t.user_id, t.feed_id)],
 );
-
-// A post is a single entry from a feed. It should have:
-
-// id - a unique identifier for the post
-// created_at - the time the record was created
-// updated_at - the time the record was last updated
-// title - the title of the post
-// url - the URL of the post (this should be unique)
-// description - the description of the post
-// published_at - the time the post was published
-// feed_id - the ID of the feed that the post came from
 
 export const posts = pgTable("posts", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),
